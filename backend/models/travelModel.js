@@ -1,30 +1,38 @@
+const db = require('../config/db');   // 연결객체를 불러와서 db 대입  
 
-const db = require('../config/db');
-
-exports.getAllTravels = () => {
-  return db.query('SELECT * FROM travels');
+exports.getBoardAll = () => {
+  return db.query('SELECT * FROM board');
 };
 
-exports.getTravelById = (id) => {
-  return db.query('SELECT * FROM travels WHERE id = ?', [id]);
-};
-
-exports.createTravel = (data) => {
-  const { title, location, googleMapsUrl, startDate, endDate, description, imageUrl } = data;
+exports.getBoardPage = (page) => {
+  const size = 10;
+  const offset = (page-1) * size;
   return db.query(
-    'INSERT INTO travels (title, location, googleMapsUrl, startDate, endDate, description, imageUrl) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [title, location, googleMapsUrl, startDate, endDate, description, imageUrl]
+    'SELECT * FROM board LIMIT ? OFFSET ?'
+    [size, offset]
   );
 };
 
-exports.updateTravel = (id, data) => {
-  const { title, location, googleMapsUrl, startDate, endDate, description, imageUrl } = data;
+exports.getBoard = (id) => {
+  return db.query('SELECT * FROM board WHERE id = ?', [id]);
+};
+
+exports.createBoard = (data) => {
+  const { title, content, writer } = data;
   return db.query(
-    'UPDATE travels SET title = ?, location = ?, googleMapsUrl = ?, startDate = ?, endDate = ?, description = ?, imageUrl = ? WHERE id = ?',
-    [title, location, googleMapsUrl, startDate, endDate, description, imageUrl, id]
+    'INSERT INTO board (title, content, writer) VALUES (?, ?, ?)',
+    [title, content, writer]
   );
 };
 
-exports.deleteTravel = (id) => {
-  return db.query('DELETE FROM travels WHERE id = ?', [id]);
+exports.updateBoard = (id, data) => {
+  const { title, content, writer } = data;
+  return db.query(
+    'UPDATE board SET title = ?, content = ?, writer = ? WHERE id = ?',
+    [title, content, writer, id]
+  );
+};
+
+exports.deleteBoard = (id) => {
+  return db.query('DELETE FROM board WHERE id = ?', [id]);
 };
