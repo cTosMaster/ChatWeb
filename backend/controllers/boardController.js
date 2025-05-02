@@ -21,7 +21,7 @@ exports.getBoradPage = async (req, res) => {
 };
 
 
-exports.getAll = async (req, res) => { //전체 목록
+exports.getBoardAll = async (req, res) => { //전체 목록
   try {
     const [rows] = await model.getBoardAll(); 
     res.json(rows);
@@ -40,7 +40,7 @@ exports.getBoard = async (req, res) => { //해당 게시글
   }
 };
 
-exports.create = async (req, res) => {
+exports.createBoard = async (req, res) => {
   try {
     await model.createBoard(req.body); //body통째로 보냄-post방식
     res.status(201).json({ message: 'board created' });
@@ -49,7 +49,7 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.update = async (req, res) => {
+exports.updateBoard = async (req, res) => {
   try {
     await model.updateBoard(req.params.id, req.body);
     res.json({ message: 'board updated' });
@@ -58,7 +58,7 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.delete = async (req, res) => {
+exports.deleteBoard = async (req, res) => {
   try {
     await model.deleteBoard(req.params.id);
     res.json({ message: 'board deleted' });
