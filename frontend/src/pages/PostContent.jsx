@@ -1,5 +1,5 @@
 // 게시글 [내용] 페이지 - PostContent.jsx
-// [코드 수정 필요]
+// [코드 수정 필요!!]
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
