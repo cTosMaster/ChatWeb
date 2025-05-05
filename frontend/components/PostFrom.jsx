@@ -3,6 +3,7 @@ import axios from "axios";
 
 const PostForm = ({ onPostSubmitted }) => {
   const [title, setTitle] = useState("");
+  const [writer, setWriter] = useState("");
   const [content, setContent] = useState("");
 
   // 폼 제출 시 호출되는 함수
@@ -35,6 +36,17 @@ const PostForm = ({ onPostSubmitted }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="제목을 입력하세요"
+            required
+          />
+        </div>
+
+        <div>
+          <label>작성자</label>
+          <input
+            type="text"
+            value={writer}
+            onChange={(e) => setWriter(e.target.value)}
+            placeholder="작성자를 입력하세요"
             required
           />
         </div>

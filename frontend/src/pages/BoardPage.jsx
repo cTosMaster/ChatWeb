@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // 다른 페이지로 이동하는 hook
+import "./BoardPage.css";
 
 const BoardPage = () => {
   const [title, setTitle] = useState("");
+  const [writer, setWriter] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ const BoardPage = () => {
   };
 
   return (
-    <div>
+    <div className="board-container">
       <h2>게시글 등록</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -31,6 +33,13 @@ const BoardPage = () => {
           placeholder="제목"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="작성자"
+          value={writer}
+          onChange={(e) => setWriter(e.target.value)}
           required
         />
         <textarea
