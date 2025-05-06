@@ -4,13 +4,15 @@ exports.getBoardAll = () => {
   return db.query('SELECT * FROM board');
 };
 
-exports.getBoardPage = (page) => {
+exports.getBoardPage = (page, search = '') => {
   const size = 10;
-  const offset = (page-1) * size;
-  return db.query(
-    'SELECT * FROM board LIMIT ? OFFSET ?',
-    [size, offset]
-  );
+  const offset = (page - 1) * size;
+
+  // 검색어가 있을 경우에만 WHERE 조건 추가
+  const baseQuery = `SELECT * FROM board ${search ? 'WHERE title LIKE ?' : ''} ORDER BY created_at DESC LIMIT ? OFFSET ?`;
+  const params = search ? [`%${search}%`, size, offset] : [size, offset];
+
+  return db.query(baseQuery, params);
 };
 
 exports.getBoard = (id) => {
