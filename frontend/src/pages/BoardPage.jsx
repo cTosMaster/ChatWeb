@@ -16,10 +16,10 @@ const BoardPage = () => {
       const res = await axios.post("http://localhost:3001/api/board", {
         title,
         content,
-	writer
+	      writer
       });
-
-      navigate(`/RegisterPage/ `); // 내용 페이지 이동
+      
+      navigate(`/`); // 내용 페이지 이동
     } catch (err) {
       console.error("등록 실패", err);
     }

@@ -8,7 +8,7 @@ exports.getBoardPage = (page) => {
   const size = 10;
   const offset = (page-1) * size;
   return db.query(
-    'SELECT * FROM board LIMIT ? OFFSET ?'
+    'SELECT * FROM board LIMIT ? OFFSET ?',
     [size, offset]
   );
 };

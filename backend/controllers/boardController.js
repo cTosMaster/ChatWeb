@@ -1,7 +1,7 @@
 const model = require('../models/boardModel'); 
 
 
-exports.getBoradPage = async (req, res) => {
+exports.getBoardPage = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; // 쿼리 파라미터에서 page 받음 (기본값 1) | url(라우트경로)이 /boards?page=1 이면 req.query.page  , /boards/page/1이면 req.params.page
     const [rows] = await model.getBoardPage(page);
@@ -30,7 +30,7 @@ exports.getBoardAll= async (req, res) => { //전체 목록
   }
 };
 
-exports.getBoard = async (req, res) => { //해당 게시글
+exports.getBoardById = async (req, res) => { //해당 게시글
   try {
     const [rows] = await model.getBoardById(req.params.id); //id 값 보냄
     if (rows.length === 0) return res.status(404).json({ error: 'Not found' });
