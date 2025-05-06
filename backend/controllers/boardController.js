@@ -1,17 +1,19 @@
 const model = require('../models/boardModel'); 
 
 
-exports.getBoradPage = async (req, res) => {
+exports.getBoardPage = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // 쿼리 파라미터에서 page 받음 (기본값 1) | url(라우트경로)이 /boards?page=1 이면 req.query.page  , /boards/page/1이면 req.params.page
-    const [rows] = await model.getBoardPage(page);
+    const page = parseInt(req.query.page) || 1;
+    const search = req.query.search || ''; // 검색어가 있을 수도, 없을 수도 있음
+    const [rows] = await model.getBoardPage(page, search);
 
     res.status(200).json({
       success: true,
       data: rows,
       currentPage: page,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error('게시글 목록 조회 에러:', error);
     res.status(500).json({
       success: false,
@@ -20,8 +22,7 @@ exports.getBoradPage = async (req, res) => {
   }
 };
 
-
-exports.getBoardAll = async (req, res) => { //전체 목록
+exports.getBoardAll= async (req, res) => { //전체 목록
   try {
     const [rows] = await model.getBoardAll(); 
     res.json(rows);
@@ -30,7 +31,7 @@ exports.getBoardAll = async (req, res) => { //전체 목록
   }
 };
 
-exports.getBoard = async (req, res) => { //해당 게시글
+exports.getBoardById = async (req, res) => { //해당 게시글
   try {
     const [rows] = await model.getBoardById(req.params.id); //id 값 보냄
     if (rows.length === 0) return res.status(404).json({ error: 'Not found' });
@@ -40,8 +41,7 @@ exports.getBoard = async (req, res) => { //해당 게시글
   }
 };
 
-exports.createBoard = async (req, res) => {
-  try {
+exports.createBoard= async (req, res) => {  try {
     await model.createBoard(req.body); //body통째로 보냄-post방식
     res.status(201).json({ message: 'board created' });
   } catch (err) {
@@ -49,7 +49,7 @@ exports.createBoard = async (req, res) => {
   }
 };
 
-exports.updateBoard = async (req, res) => {
+exports.updateBoard= async (req, res) => {
   try {
     await model.updateBoard(req.params.id, req.body);
     res.json({ message: 'board updated' });
