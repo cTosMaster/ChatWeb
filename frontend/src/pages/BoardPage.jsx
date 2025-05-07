@@ -1,59 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./BoardPage.css";
 
 // 게시글 수정일 경우
-const BoardPage = ({ onPostSubmitted, postId = null }) => {
+const BoardPage = ({ onPostSubmitted }) => {
   const [title, setTitle] = useState("");
   const [writer, setWriter] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // 수정 모드인 경우 postId를 id로 대체
-  const { id } = useParams();
-
-  const isEdit = !!id;
-
-  useEffect(() => {
-    if (isEdit) {
-      axios
-        .get(`http://localhost:3001/api/board/${id}`)
-        .then((res) => {
-          const { title, writer, content } = res.data;
-          setTitle(title);
-          setWriter(writer);
-          setContent(content);
-        })
-        .catch((err) => {
-          console.error("게시글 불러오기 실패:", err);
-          setError("게시글 데이터를 불러오지 못했습니다.");
-        });
-    }
-  }, [id]);
-
   // 폼 제출 시 호출되는 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // 에러 메시지 리셋!
+    setError("");
 
     try {
-      let response;
-
-      if (isEdit) {
-        response = await axios.put(`http://localhost:3001/api/board/${id}`, {
-          title,
-          writer,
-          content,
-        });
-      } else {
-        response = await axios.post("http://localhost:3001/api/board", {
-          title,
-          writer,
-          content,
-        });
-      }
+      const response = await axios.post("http://localhost:3001/api/board", {
+        title,
+        writer,
+        content,
+      });
 
       onPostSubmitted?.(response.data);
       navigate("/");
@@ -70,7 +38,7 @@ const BoardPage = ({ onPostSubmitted, postId = null }) => {
 
   return (
     <div className="board-container">
-      <h2>{isEdit ? "게시글 수정" : "게시글 등록"}</h2>
+      <h2>게시글 등록</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -107,7 +75,7 @@ const BoardPage = ({ onPostSubmitted, postId = null }) => {
 
         <div className="button-container">
           <button type="submit" className="submit">
-            {isEdit ? "수정" : "등록"}
+            등록
           </button>
           <button type="button" className="cancel" onClick={handleCancel}>
             취소
