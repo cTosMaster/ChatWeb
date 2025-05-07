@@ -1,7 +1,7 @@
 import axios from "axios";
-import {REST_TARGET_IP} from "../config/RestfulTargetIP";
+import {REST_TARGET_IP, REST_TARGET_PORT, REST_TARGET_PROTO} from "../config/RestfulTargetIP";
 
-const BASE_URL = `http://${REST_TARGET_IP}:3001/api/board`;
+const BASE_URL = `${REST_TARGET_PROTO}${REST_TARGET_IP}${REST_TARGET_PORT}/api/board`;
 
 //게시글 페이지 조회
 export const fetchPostList = (page = 1, searchQuery = "") => {
