@@ -25,6 +25,7 @@
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
+  width: 100%;
 }
 
 .board-container textarea {
@@ -32,17 +33,39 @@
   min-height: 120px;
 }
 
+.board-container .button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .board-container button {
   padding: 10px;
   font-size: 16px;
-  background-color: #3498db;
-  color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 48%;
+}
+
+.board-container button.submit {
+  background-color: #3498db;
+  color: white;
+}
+
+.board-container button.cancel {
+  background-color: #ccc;
+  color: white;
 }
 
 .board-container button:hover {
+  opacity: 0.8;
+}
+
+.board-container button.submit:hover {
   background-color: #2980b9;
+}
+
+.board-container button.cancel:hover {
+  background-color: #aaa;
 }
