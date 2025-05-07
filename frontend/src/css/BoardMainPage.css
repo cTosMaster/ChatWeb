@@ -1,0 +1,108 @@
+@font-face {
+  font-family: '제목';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimAllimjangTTF-B.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background: #2b72ff; /* 원하는 배경색 코드로 변경 */
+}
+
+.board-container {
+  width: 90%;
+  margin: 40px auto;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  border: 2.5px solid #50B6FA;       /* 원하는 색상으로 변경 가능 */
+  border-radius: 16px;               /* 모서리를 둥글게, 원하면 이 값도 조절 */
+  /*box-shadow: 0 0 18px 1px #ececec;  /* (옵션) 살짝 그림자 효과 */
+  background: #fff;
+  margin-bottom: 64px;      
+}
+
+.board-title {
+  width: 95%;
+  margin: 0 auto;
+  text-align: left;
+  color: #222;
+  margin-top: 64px;
+  margin-bottom: 32px;
+  font-size: 3rem;
+  font-family: '제목', Arial, sans-serif;
+}
+
+/* 제목 아래 간단한 문구*/
+.board-desc { 
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 6px;
+  margin-bottom: 64px;
+  color: #666;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.board-table {
+  width: 95%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 0 10px 1px #ececec;
+  margin-bottom: 64px;
+}
+
+.board-table th, .board-table td {
+  border: 1px solid #e2e2e2;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.board-table th {
+  background-color: #f5f5f5;
+  color: #4a4a4a;
+  font-size: 16px;
+}
+
+.board-table tbody tr:hover {
+  background-color: #f0f8ff;
+}
+
+.board-empty {
+  text-align: center;
+  color: #2236e4;
+  padding: 40px 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.pagination button {
+  border: 1.5px solid #50B6FA;
+  color: #232984;
+  background: white;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 6px 20px;
+  margin: 0 6px;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+}
+
+.pagination button:disabled {
+  color: #bbbbbb;
+  border-color: #dadada;
+  background: #f2f2f2;
+  cursor: default;
+}
+
+.placeholder-row td {
+  /* 연한 배경과 최소 높이로 구분 */
+  background: #fff;
+  height: 16px;
+  border-bottom: 1px solid #eee;
+}
