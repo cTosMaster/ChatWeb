@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3001/api/board";
@@ -22,10 +21,6 @@ export const createPost = (post) =>
 export const updatePost = (id, post) =>
   axios.put(`${BASE_URL}/${id}`, post).then((res) => res.data);
 
-// 게시글 삭제
-// export const deletePost = (id) =>
-//   axios.delete(`${BASE_URL}/${id}`).then((res) => res.data);
-
 export const deletePost = async (id) => {
   try{
     const response = await axios.delete(`${BASE_URL}/${id}`);
@@ -40,3 +35,7 @@ export const deletePost = async (id) => {
     }
   }
 };
+
+// 게시글 조회수 증가 <미적용>
+export const increaseViewCount = (id) =>
+  axios.patch(`${BASE_URL}/${id}/view`).then((res) => res.data);

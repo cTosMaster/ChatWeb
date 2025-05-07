@@ -1,83 +1,45 @@
-// 게시글 [내용] 페이지 - PostContent.jsx
+// 게시글 [내용] 페이지 - ContentPage.jsx
 // [코드 수정 필요!!]
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { deletePost } from '../api/boardApi'; // api.js에서 함수 불러오기
-import axios from 'axios';
+import { fetchPostById, deletePost } from '../api/boardApi'; // api.js에서 함수 불러오기
 import { Link } from 'react-router-dom';  // 링크 추가
 import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
-const PostContent = () => {
+
+const ContentPage = () => {
   const { state } = useLocation();
   const { id } = useParams(); // URL에서 /post/:id 가져오기
   const navigate = useNavigate();
-  const [post, setPost] = useState(state?.post || null);
+  const [post, setPost] = useState(state?.post || null);  // 우선 적용
   
+  //해당 내용 가져오기.
   useEffect(() => {
-    // state로 받은 post가 없으면 백엔드에서 직접 가져옴
-    if (!post) {
-      axios.get(`http://localhost:3001/api/board/${id}`)
-        .then(response => {
-          setPost(response.data.data);
-        })
-        .catch(err => console.error('게시글 불러오기 오류:', err));
-    } else {
-      // 조회수 증가
-      axios.patch(`http://localhost:3001/api/board/${post.id}/view`)
-        .catch(error => console.error('조회수 증가 오류:', error));
-    }
-  }, [id, post]);
-
+    const loadPost = async () => {
+      try {
+        if (!post) {
+          const fetchedPost = await fetchPostById(id);
+          setPost(fetchedPost);
+        } 
+        else {
+          await increaseViewCount(post.id);
+        }
+      } 
+      catch (error) {
+        console.error('게시글 처리 중 오류:', error);
+      }
+    };
   
+    loadPost();
+  }, [id, post]);
 
   // 수정 함수
   const handleEdit = () => {
     // 수정 페이지로 이동하는 함수
     navigate(`/edit/${post.id}`, { state: { post } });
-
-    /*
-    const updatedData = {
-      title: 'Updated Title', // 새로운 제목 (사용자가 입력한 데이터를 여기에 넣을 수 있다)
-      content: 'Updated Content' // 새로운 내용 (사용자가 입력한 데이터를 여기에 넣을 수 있다)
-    };
-    */
-
-    /*
-    //api.js 생성으로 인한 수정
-    axios.put(`http://localhost:3001/api/board/${id}`, updatedData)
-      .then(() => {
-        alert('Post updated successfully');
-        // 필요 시 게시글 데이터를 다시 가져오기
-        setPost({ ...post, ...updatedData });
-      })
-      .catch(error => console.error('게시글 수정 오류:', error));
-    */
-
-    /*
-    const result = await editPost(id, updatedData);
-
-    if (result.success) {
-      alert('Post updated successfully');
-      setPost({ ...post, ...updatedData });
-    } else {
-      alert(result.error || 'Failed to update post');
-    }
-    */
   };
-
-  // 삭제 함수
-  /* 
-  // api.js 생성으로 인한 수정
-  const handleDelete = () => {
-    axios.delete(`http://localhost:3001/api/board/${id}`)
-      .then(() => {
-        alert('Post deleted successfully');
-        navigate('/'); // 삭제 후 메인 페이지로 이동
-      })
-      .catch(error => console.error('게시글 삭제 오류:', error));
-  }; */
 
   const handleDelete = async () => {
     try {
@@ -151,4 +113,4 @@ const PostContent = () => {
   );
 };
 
-export default PostContent;
+export default ContentPage;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchPostList } from '../api/boardApi';
 import { Link } from 'react-router-dom';
 import { Container, Card, Button, Row, Col, Pagination, Form } from 'react-bootstrap';
-import "./MainPage.css";
+import "../css/MainPage.css";
 
 const MainPage = () => {
   const [posts, setPosts] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // 다른 페이지로 이동하는 hook
-import "./BoardPage.css";
+import "../css/BoardPage.css";
 
 const BoardPage = () => {
   const [title, setTitle] = useState("");

@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import BoardPage from "./pages/BoardPage";
-import ContentPage from "./pages/PostContent";
+import ContentPage from "./pages/ContentPage";
+import ContentUpdatePage from "./pages/ContentUpdatePage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/boardpage" element={<BoardPage />} />
         <Route path="/contentpage" element={<ContentPage />} />
         <Route path="/post/:id" element={<ContentPage />} />
+        <Route path="/edit/:id" element={<ContentUpdatePage />} />
       </Routes>
     </BrowserRouter>
   );
