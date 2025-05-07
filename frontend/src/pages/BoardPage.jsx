@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./BoardPage.css";
 
 // 게시글 수정일 경우
@@ -11,13 +11,15 @@ const BoardPage = ({ onPostSubmitted, postId = null }) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const isEdit = !!postId;
+  // 수정 모드인 경우 postId를 id로 대체
+  const { id } = useParams();
 
-  useEffect;
+  const isEdit = !!id;
+
   useEffect(() => {
     if (isEdit) {
       axios
-        .get(`http://localhost:3001/api/board/${postId}`)
+        .get(`http://localhost:3001/api/board/${id}`)
         .then((res) => {
           const { title, writer, content } = res.data;
           setTitle(title);
@@ -29,20 +31,22 @@ const BoardPage = ({ onPostSubmitted, postId = null }) => {
           setError("게시글 데이터를 불러오지 못했습니다.");
         });
     }
-  }, [postId]);
+  }, [id]);
 
   // 폼 제출 시 호출되는 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // 에러 메시지 리셋!
 
     try {
       let response;
 
       if (isEdit) {
-        response = await axios.put(
-          `http://localhost:3001/api/board/${postId}`,
-          { title, writer, content }
-        );
+        response = await axios.put(`http://localhost:3001/api/board/${id}`, {
+          title,
+          writer,
+          content,
+        });
       } else {
         response = await axios.post("http://localhost:3001/api/board", {
           title,
@@ -101,7 +105,7 @@ const BoardPage = ({ onPostSubmitted, postId = null }) => {
           />
         </div>
 
-        <div class="button-container">
+        <div className="button-container">
           <button type="submit" className="submit">
             {isEdit ? "수정" : "등록"}
           </button>

@@ -11,6 +11,7 @@ function App() {
         <Route path="/boardpage" element={<BoardPage />} />
         <Route path="/contentpage" element={<ContentPage />} />
         <Route path="/post/:id" element={<ContentPage />} />
+        <Route path="/edit/:id" element={<BoardPage />} />
       </Routes>
     </BrowserRouter>
   );
