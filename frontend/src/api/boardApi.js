@@ -1,6 +1,7 @@
 import axios from "axios";
+import {REST_TARGET_IP} from "../config/RestfulTargetIP";
 
-const BASE_URL = "http://localhost:3001/api/board";
+const BASE_URL = `http://${REST_TARGET_IP}localhost:3001/api/board`;
 
 //게시글 페이지 조회
 export const fetchPostList = (page = 1, searchQuery = "") => {
@@ -24,8 +25,8 @@ export const updatePost = (id, post) =>
 export const deletePost = async (id) => {
   try{
     const response = await axios.delete(`${BASE_URL}/${id}`);
-    console.log("서버 응답:", response.data);//응답 확인
-    return response.data//서버에서 반환된 데이터
+    console.log("서버 응답:", response.data);        //응답 확인
+    return response.data                            //서버에서 반환된 데이터
   }catch(error){
     console.log("삭제 에러:", error);
     if(error.response && error.response.data){

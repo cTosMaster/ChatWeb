@@ -1,0 +1,1 @@
+export const REST_TARGET_IP = "localhost";
