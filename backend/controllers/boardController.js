@@ -61,8 +61,8 @@ exports.updateBoard= async (req, res) => {
 exports.deleteBoard = async (req, res) => {
   try {
     await model.deleteBoard(req.params.id);
-    res.json({ message: 'board deleted' });
+    res.json({ message: 'board deleted' }); //성공 시 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message }); //실패 시
   }
 };

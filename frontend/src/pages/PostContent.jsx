@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { deletePost } from '../api/postApi'; // api.js에서 함수 불러오기
+import { deletePost } from '../api/boardApi'; // api.js에서 함수 불러오기
 import axios from 'axios';
 import { Link } from 'react-router-dom';  // 링크 추가
 import { useLocation } from 'react-router-dom';
@@ -80,15 +80,24 @@ const PostContent = () => {
   }; */
 
   const handleDelete = async () => {
-    const result = await deletePost(post.id);
-
-    if (result.success) {
-      alert('Post deleted successfully');
-      navigate('/'); //삭제 후 메인페이지로 이동
-    } else {
-      alert(result.error || 'Failed to delete post');
+    try {
+        const result = await deletePost(post.id);
+        console.log("삭제 메시지:", result);
+        
+        // 성공 시
+        if (result.message) {
+            alert(result.message || 'Post deleted successfully');
+            navigate('/'); // 삭제 후 메인 페이지로 이동
+        }
+        // 실패 시
+        else if (result.error) {
+            alert(result.error || 'Failed to delete post');
+        }
+    } catch (error) {
+        alert('삭제 중 오류 발생');
+        console.error(error);
     }
-  };
+};
 
   if (!post) return <div>로딩 중...</div>;
 
