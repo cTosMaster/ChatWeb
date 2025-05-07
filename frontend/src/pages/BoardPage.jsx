@@ -1,56 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // 다른 페이지로 이동하는 hook
+import { useNavigate } from "react-router-dom";
 import "./BoardPage.css";
 
-const BoardPage = () => {
+// 게시글 수정일 경우
+const BoardPage = ({ onPostSubmitted, postId = null }) => {
   const [title, setTitle] = useState("");
   const [writer, setWriter] = useState("");
   const [content, setContent] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  //게시글 등록 처리 (비동기)
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // 새로고침 X -> handleSubmit
-    try {
-      const res = await axios.post("http://localhost:3001/api/board", {
-        title,
-        content,
-	      writer
-      });
-      
-      navigate(`/`); // 내용 페이지 이동
-    } 
-    catch (err) {
-      console.error("등록 실패", err);
+  const isEdit = !!postId;
+
+  useEffect;
+  useEffect(() => {
+    if (isEdit) {
+      axios
+        .get(`http://localhost:3001/api/board/${postId}`)
+        .then((res) => {
+          const { title, writer, content } = res.data;
+          setTitle(title);
+          setWriter(writer);
+          setContent(content);
+        })
+        .catch((err) => {
+          console.error("게시글 불러오기 실패:", err);
+          setError("게시글 데이터를 불러오지 못했습니다.");
+        });
     }
+  }, [postId]);
+
+  // 폼 제출 시 호출되는 함수
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      let response;
+
+      if (isEdit) {
+        response = await axios.put(
+          `http://localhost:3001/api/board/${postId}`,
+          { title, writer, content }
+        );
+      } else {
+        response = await axios.post("http://localhost:3001/api/board", {
+          title,
+          writer,
+          content,
+        });
+      }
+
+      onPostSubmitted?.(response.data);
+      navigate("/");
+    } catch (error) {
+      console.error("게시글 등록 실패:", error);
+      setError("게시글 등록에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  // 취소 버튼
+  const handleCancel = () => {
+    navigate("/");
   };
 
   return (
     <div className="board-container">
-      <h2>게시글 등록</h2>
+      <h2>{isEdit ? "게시글 수정" : "게시글 등록"}</h2>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="제목"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="작성자"
-          value={writer}
-          onChange={(e) => setWriter(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="내용"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        />
-        <button type="submit">등록</button>
+        <div>
+          <label>제목</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
+            required
+          />
+        </div>
+
+        <div>
+          <label>작성자</label>
+          <input
+            type="text"
+            value={writer}
+            onChange={(e) => setWriter(e.target.value)}
+            placeholder="작성자를 입력하세요"
+            required
+          />
+        </div>
+
+        <div>
+          <label>내용</label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="내용을 입력하세요"
+            required
+          />
+        </div>
+
+        <div class="button-container">
+          <button type="submit" className="submit">
+            {isEdit ? "수정" : "등록"}
+          </button>
+          <button type="button" className="cancel" onClick={handleCancel}>
+            취소
+          </button>
+        </div>
       </form>
     </div>
   );
