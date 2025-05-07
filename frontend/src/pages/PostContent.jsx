@@ -3,12 +3,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { deletePost } from '../api/postApi'; // api.js에서 함수 불러오기
+// import { deletePost } from '../api/postApi'; // api.js에서 함수 불러오기
+import { fetchPostList } from '../api/boardApi'; // boardApi.js에서 함수 불러오기
 import axios from 'axios';
 import { Link } from 'react-router-dom';  // 링크 추가
 import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
+// PostContent 컴포넌트
 const PostContent = () => {
   const { state } = useLocation();
   const { id } = useParams(); // URL에서 /post/:id 가져오기
@@ -30,7 +32,6 @@ const PostContent = () => {
     }
   }, [id, post]);
 
-  
 
   // 수정 함수
   const handleEdit = () => {
@@ -67,31 +68,34 @@ const PostContent = () => {
     */
   };
 
+
   // 삭제 함수
-  /* 
-  // api.js 생성으로 인한 수정
-  const handleDelete = () => {
+  const handleDeleteSync = () => {
     axios.delete(`http://localhost:3001/api/board/${id}`)
       .then(() => {
         alert('Post deleted successfully');
         navigate('/'); // 삭제 후 메인 페이지로 이동
       })
       .catch(error => console.error('게시글 삭제 오류:', error));
-  }; */
+  };
 
-  const handleDelete = async () => {
+  const handleDeleteAsync = async () => {
     const result = await deletePost(post.id);
 
     if (result.success) {
       alert('Post deleted successfully');
-      navigate('/'); //삭제 후 메인페이지로 이동
+      navigate('/'); // 삭제 후 메인페이지로 이동
     } else {
       alert(result.error || 'Failed to delete post');
     }
   };
 
+
+  // 사용자가 게시글 데이터 아직받지 못했을 때, "로딩 중..." 메시지를 화면에 띄움
+  // post 값이 없을 때(null이나 undefined)일 때
   if (!post) return <div>로딩 중...</div>;
 
+// 화면에 출력되는 컨텐츠
   return (
     <Container style={{ maxWidth: '800px', marginTop: '50px' }}>
       <h2 className="mb-4">{post.title}</h2>
@@ -142,4 +146,5 @@ const PostContent = () => {
   );
 };
 
+//이 컴포넌트를 다른 파일에서 사용할 수 있도록 내보낸다.
 export default PostContent;
