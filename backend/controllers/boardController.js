@@ -1,7 +1,7 @@
 const model = require('../models/boardModel'); 
 
 
-exports.getBoardPage = async (req, res) => {
+exports.getBoardPage = async (req, res) => {      // 페이지 역순 10개 1페이지 응답
   try {
     const page = parseInt(req.query.page) || 1;
     const search = req.query.search || ''; // 검색어가 있을 수도, 없을 수도 있음

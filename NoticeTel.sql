@@ -4,6 +4,7 @@ create database if not exists noticetel;
 
 -- 2. 사용자 계정 생성 (있으면 SKIP)
 CREATE USER IF NOT EXISTS 'noticetel'@'%' IDENTIFIED BY 'noticetel12#$';
+CREATE USER IF NOT EXISTS 'noticetel'@'localhost' IDENTIFIED BY 'noticetel12#$';
 
 -- 3. 권한 부여
 GRANT ALL PRIVILEGES ON noticetel.* TO 'noticetel'@'%';

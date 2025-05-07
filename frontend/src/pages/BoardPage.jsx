@@ -9,8 +9,8 @@ const BoardPage = () => {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
+  //게시글 등록 처리 (비동기)
   const handleSubmit = async (e) => {
-    // 비동기
     e.preventDefault(); // 새로고침 X -> handleSubmit
     try {
       const res = await axios.post("http://localhost:3001/api/board", {
@@ -20,7 +20,8 @@ const BoardPage = () => {
       });
       
       navigate(`/`); // 내용 페이지 이동
-    } catch (err) {
+    } 
+    catch (err) {
       console.error("등록 실패", err);
     }
   };

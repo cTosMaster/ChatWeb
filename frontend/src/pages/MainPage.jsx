@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { fetchPostList } from '../api/boardApi';
 import { Link } from 'react-router-dom';
 import { Container, Card, Button, Row, Col, Pagination, Form } from 'react-bootstrap';
 import "./MainPage.css";
@@ -11,12 +11,11 @@ const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태 추가
 
   useEffect(() => {
-    const queryParam = searchQuery ? `&search=${searchQuery}` : '';
-    axios.get(`http://localhost:3001/api/board/pages?page=${page}${queryParam}`)
-      .then(response => {
-        console.log("받은 데이터:", response.data.data);
-        setPosts(response.data.data);
-        setHasNextPage(response.data.data.length === 10);
+    fetchPostList(page, searchQuery)
+      .then(data => {
+        console.log("받은 데이터:", data);
+        setPosts(data);
+        setHasNextPage(data.length === 10);
       })
       .catch(err => console.error('목록 불러오기 실패', err));
   }, [page, searchQuery]); // 페이지나 검색어 변경 시마다 호출
