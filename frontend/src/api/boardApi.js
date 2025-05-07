@@ -23,5 +23,20 @@ export const updatePost = (id, post) =>
   axios.put(`${BASE_URL}/${id}`, post).then((res) => res.data);
 
 // 게시글 삭제
-export const deletePost = (id) =>
-  axios.delete(`${BASE_URL}/${id}`).then((res) => res.data);
+// export const deletePost = (id) =>
+//   axios.delete(`${BASE_URL}/${id}`).then((res) => res.data);
+
+export const deletePost = async (id) => {
+  try{
+    const response = await axios.delete(`${BASE_URL}/${id}`);
+    console.log("서버 응답:", response.data);//응답 확인
+    return response.data//서버에서 반환된 데이터
+  }catch(error){
+    console.log("삭제 에러:", error);
+    if(error.response && error.response.data){
+        return{
+          error: error.res?.data?.error || '서버 오류 발생'
+      };
+    }
+  }
+};
