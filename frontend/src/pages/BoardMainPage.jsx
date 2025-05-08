@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchPostList } from "../api/boardApi";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link} from 'react-router-dom';
 import '../css/BoardMainPage.css';
 import AuthCodeInput from "../security/AuthCodeInput";
 import { Form, Button, Row, Col, Pagination } from 'react-bootstrap';
@@ -21,43 +21,26 @@ const BoardMainPage = () => {
     const [showAuthModal, setShowAuthModal] = useState(false);
 
 
-      useEffect(() => {
-        const verified = sessionStorage.getItem("authCodeVerified");
-        if (verified === "true") {
-          setIsVerified(true);
-        }
-      }, []);
+    useEffect(() => {
+      const verified = sessionStorage.getItem("authCodeVerified");
+      if (verified === "true") {
+        setIsVerified(true);
+      }
+    }, []);
 
-      useEffect(() => {
-        if (!isVerified) return;
-        fetchPostList(page, searchQuery)
-          .then(data => {
-            console.log("받은 데이터:", data);
-            setPosts(data);
-            setHasNextPage(data.length === 10);
-          })
-          .catch(err => console.error('목록 불러오기 실패', err));
-      }, [page, searchQuery, isVerified]);
+    useEffect(() => {
+      if (!isVerified) return;
+      fetchPostList(page, searchQuery)
+        .then(data => {
+          console.log("받은 데이터:", data);
+          setPosts(data);
+          setHasNextPage(data.length === 10);
+        })
+        .catch(err => console.error('목록 불러오기 실패', err));
+    }, [page, searchQuery, isVerified]);
 
     const goNext = () => setPage(prev => prev + 1);
     const goPrev = () => setPage(prev => (prev > 1 ? prev - 1 : 1));
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     try {
-  //       const data = await fetchPostList();
-  //       const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
-  //       setPosts(sorted);
-  //     } 
-  //     catch (err) {
-  //       console.error("게시글 불러오기 오류:", err);
-  //     } 
-  //     finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  
-  //   fetchPosts();
-  // }, []);
 
 
   //페이지 출력 처리
@@ -74,31 +57,6 @@ const BoardMainPage = () => {
     setIsVerified(true);
     setPage(1); // 인증되면 페이지 리셋
   };
-
-
-  // if (loading) return <div className="board-empty">불러오는 중...</div>;
-
-  // if (posts.length === 0) {
-  //   return (
-  //     <div className="board-container">
-  //       <h1 className="board-title">게시판</h1>
-  //       <div className="board-empty">게시물이 없습니다.</div>
-  //     </div>
-  //   );
-  // }
-
-  // 1페이지면 0~9, 2페이지면 10~19 ...
-  // const indexOfLast = currentPage * POSTS_PER_PAGE;
-  // const indexOfFirst = indexOfLast - POSTS_PER_PAGE;
-  // const currentPosts = posts.slice(indexOfFirst, indexOfLast);
-
-  // const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-
-  // const handlePrev = () => setCurrentPage(prev => Math.max(prev - 1, 1));
-  // const handleNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-
-  // // placeholder 개수 계산
-  // const placeholders = POSTS_PER_PAGE - currentPosts.length;
 
   return (
     <div className="board-container" >
@@ -154,23 +112,24 @@ const BoardMainPage = () => {
         </thead>
         <tbody>
           {posts.map(post => (
-            <tr key={post.id} style={{cursor:'pointer'}} onClick={()=> navigate(`/post/${post.id}`, {state: post })}>
-              <td style={{textAlign: "center"}}>{post.title}</td>
-              <td>{post.writer}</td>
-              <td>{new Date(post.created_at).toISOString().split('T')[0]}</td>
-              <td>{post.view_cnt}</td>
-            </tr>
-
+          <tr key={post.id} style={{ cursor: 'pointer' }}>
+            <Link 
+                to={`/post/${post.id}`} 
+                state={{post}} 
+                style={{ 
+                    display: 'contents', 
+                    textDecoration: 'none', 
+                    color: 'inherit' 
+                }}
+            >
+                <td style={{ textAlign: 'center' }}>{post.title}</td>
+                <td>{post.writer}</td>
+                <td>{new Date(post.created_at).toISOString().split('T')[0]}</td>
+                <td>{post.view_cnt}</td>
+            </Link>
+    </tr>
           ))}
-          {/* placeholder 라인 추가 */}
-          {/* {[...Array(placeholders)].map((_, idx) => (
-            <tr key={`placeholder-${idx}`} className="placeholder-row">
-              <td>&nbsp;</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          ))} */}
+
         </tbody>
       </table>
       )}
