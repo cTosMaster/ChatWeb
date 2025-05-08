@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // 다른 페이지로 이동하는 hook
 import "../css/BoardPage.css";
+import { createPost } from "../api/boardApi";
 
 // 게시글 수정일 경우
 const BoardPage = ({ onPostSubmitted }) => {
@@ -17,13 +18,11 @@ const BoardPage = ({ onPostSubmitted }) => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:3001/api/board", {
-        title,
-        writer,
-        content,
-      });
+      const postData = { title, writer, content };
 
-      onPostSubmitted?.(response.data);
+      const response = await createPost(postData);
+
+      onPostSubmitted?.(response);
       navigate("/");
     } catch (error) {
       console.error("게시글 등록 실패:", error);
