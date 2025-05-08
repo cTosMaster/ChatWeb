@@ -73,7 +73,7 @@ const BoardMainPage = () => {
     setPage(1); // 인증되면 페이지 리셋
   };
 
-  // 등록 버튼 핸들러
+  // !!! 등록 버튼 핸들러
   const handleBoardPage = () => {
     navigate("/boardpage");
   };
@@ -137,6 +137,7 @@ const BoardMainPage = () => {
           className="justify-content-end"
           style={{ marginRight: "0", marginLeft: "0", gap: "8px" }}
         >
+          {/* !!! 등록 버튼 */}
           <Col xs="auto" style={{ paddingLeft: "0px", flex: 1 }}>
             <Button
               onClick={handleBoardPage}
