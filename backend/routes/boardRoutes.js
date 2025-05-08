@@ -21,4 +21,7 @@ router.put('/:id', controller.updateBoard);
 // 게시글 삭제 (id는 URL 파라미터로)
 router.delete('/:id', controller.deleteBoard);
 
+// 게시글 조회수 증가
+router.patch('/:id/view', controller.incrementViewCnt);
+
 module.exports = router;

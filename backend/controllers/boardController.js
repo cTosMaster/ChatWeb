@@ -66,3 +66,15 @@ exports.deleteBoard = async (req, res) => {
     res.status(500).json({ error: err.message }); //실패 시
   }
 };
+
+exports.incrementViewCnt = async (req, res) => {
+  try {
+    const [result] = await model.incrementViewCnt(req.params.id);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    res.json({ message: 'ViewCnt Updated' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
