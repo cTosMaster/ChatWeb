@@ -38,3 +38,7 @@ exports.updateBoard = (id, data) => {
 exports.deleteBoard = (id) => {
   return db.query('DELETE FROM board WHERE id = ?', [id]);
 };
+
+exports.incrementViewCnt = (id) => {
+  return db.query('UPDATE board SET view_cnt = view_cnt + 1 WHERE id = ?', [id]);
+};
