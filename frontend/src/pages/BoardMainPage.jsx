@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchPostList } from "../api/boardApi";
-import '../css/BoardMainPage.css';
+import "../css/BoardMainPage.css";
+import { useNavigate } from "react-router-dom"; // 이동 훅
 
 /* 페이지당 노출되는 게시물 수*/
 const POSTS_PER_PAGE = 10;
@@ -8,23 +9,24 @@ const POSTS_PER_PAGE = 10;
 function BoardMainPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);   // 현재 페이지
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const data = await fetchPostList();
-        const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sorted = [...data].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
         setPosts(sorted);
-      } 
-      catch (err) {
+      } catch (err) {
         console.error("게시글 불러오기 오류:", err);
-      } 
-      finally {
+      } finally {
         setLoading(false);
       }
     };
-  
+
     fetchPosts();
   }, []);
 
@@ -46,30 +48,41 @@ function BoardMainPage() {
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
-  const handlePrev = () => setCurrentPage(prev => Math.max(prev - 1, 1));
-  const handleNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const handleNext = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   // placeholder 개수 계산
   const placeholders = POSTS_PER_PAGE - currentPosts.length;
+
+  const handleBoardPage = () => {
+    navigate("/boardpage"); // 등록 페이지로 이동
+  };
 
   return (
     <div className="board-container">
       <h1 className="board-title">노티스텔</h1>
       <p className="board-desc">우리 집에 대한 따끈한 소식이 있어요!</p>
+      {/* 게시글 등록 버튼 */}
+      <div className="button-container">
+        <button className="submit" onClick={handleBoardPage}>
+          게시글 등록
+        </button>
+      </div>
       <table className="board-table">
         <thead>
           <tr>
-            <th style={{width: '60px'}}>번호</th>
-            <th style={{width: '60%'}}>제목</th>
-            <th style={{width: '120px'}}>작성자</th>
-            <th style={{width: '160px'}}>작성일자</th>
+            <th style={{ width: "60px" }}>번호</th>
+            <th style={{ width: "60%" }}>제목</th>
+            <th style={{ width: "120px" }}>작성자</th>
+            <th style={{ width: "160px" }}>작성일자</th>
           </tr>
         </thead>
         <tbody>
-          {currentPosts.map(post => (
+          {currentPosts.map((post) => (
             <tr key={post.id}>
               <td>{post.id}</td>
-              <td style={{textAlign: "left"}}>{post.title}</td>
+              <td style={{ textAlign: "left" }}>{post.title}</td>
               <td>{post.author}</td>
               <td>{post.date}</td>
             </tr>
@@ -88,11 +101,15 @@ function BoardMainPage() {
 
       {/* 페이지네이션 */}
       <div className="pagination">
-        <button onClick={handlePrev} disabled={currentPage === 1}>이전</button>
-        <span style={{margin: '0 16px'}}>
+        <button onClick={handlePrev} disabled={currentPage === 1}>
+          이전
+        </button>
+        <span style={{ margin: "0 16px" }}>
           {currentPage} / {totalPages}
         </span>
-        <button onClick={handleNext} disabled={currentPage === totalPages}>다음</button>
+        <button onClick={handleNext} disabled={currentPage === totalPages}>
+          다음
+        </button>
       </div>
     </div>
   );

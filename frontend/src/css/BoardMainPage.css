@@ -1,6 +1,7 @@
 @font-face {
-  font-family: '제목';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimAllimjangTTF-B.woff2') format('woff2');
+  font-family: "제목";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimAllimjangTTF-B.woff2")
+    format("woff2");
   font-weight: normal;
   font-style: normal;
 }
@@ -12,12 +13,12 @@ body {
 .board-container {
   width: 90%;
   margin: 40px auto;
-  font-family: 'Segoe UI', 'Arial', sans-serif;
-  border: 2.5px solid #50B6FA;       /* 원하는 색상으로 변경 가능 */
-  border-radius: 16px;               /* 모서리를 둥글게, 원하면 이 값도 조절 */
+  font-family: "Segoe UI", "Arial", sans-serif;
+  border: 2.5px solid #50b6fa; /* 원하는 색상으로 변경 가능 */
+  border-radius: 16px; /* 모서리를 둥글게, 원하면 이 값도 조절 */
   /*box-shadow: 0 0 18px 1px #ececec;  /* (옵션) 살짝 그림자 효과 */
   background: #fff;
-  margin-bottom: 64px;      
+  margin-bottom: 64px;
 }
 
 .board-title {
@@ -28,11 +29,11 @@ body {
   margin-top: 64px;
   margin-bottom: 32px;
   font-size: 3rem;
-  font-family: '제목', Arial, sans-serif;
+  font-family: "제목", Arial, sans-serif;
 }
 
 /* 제목 아래 간단한 문구*/
-.board-desc { 
+.board-desc {
   width: 95%;
   margin: 0 auto;
   margin-top: 6px;
@@ -40,6 +41,12 @@ body {
   color: #666;
   font-size: 1rem;
   text-align: left;
+}
+
+/* 등록 버튼 */
+.board-container button.submit {
+  background-color: #3498db;
+  color: white;
 }
 
 .board-table {
@@ -51,7 +58,8 @@ body {
   margin-bottom: 64px;
 }
 
-.board-table th, .board-table td {
+.board-table th,
+.board-table td {
   border: 1px solid #e2e2e2;
   padding: 12px 8px;
   text-align: center;
@@ -82,7 +90,7 @@ body {
 }
 
 .pagination button {
-  border: 1.5px solid #50B6FA;
+  border: 1.5px solid #50b6fa;
   color: #232984;
   background: white;
   border-radius: 6px;
