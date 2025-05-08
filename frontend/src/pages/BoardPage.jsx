@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom"; // 다른 페이지로 이동하는 hook
 import "../css/BoardPage.css";
 import { createPost } from "../api/boardApi";
@@ -23,7 +22,8 @@ const BoardPage = ({ onPostSubmitted }) => {
 
       onPostSubmitted?.(response);
       navigate("/");
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("게시글 등록 실패:", error);
       setError("게시글 등록에 실패했습니다. 다시 시도해 주세요.");
     }
