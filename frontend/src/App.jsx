@@ -10,15 +10,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-<<<<<<< HEAD
         <Route path="/" element={<BoardMainPage />} />
         {/* 인증된 사용자만 접근 가능 */}
         <Route
-=======
-         <Route path="/" element={<BoardMainPage />} />
-         {/* 인증된 사용자만 접근 가능 */}
-         <Route
->>>>>>> origin/dev
           path="/boardpage"
           element={
             <ProtectedRoute>
