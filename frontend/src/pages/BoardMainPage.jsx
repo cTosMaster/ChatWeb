@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { fetchPostList } from "../api/boardApi";
-<<<<<<< HEAD
+import { useNavigate } from "react-router-dom";
 import "../css/BoardMainPage.css";
-import { useNavigate } from "react-router-dom"; // 이동 훅
-=======
-import { useNavigate } from 'react-router-dom';
-import '../css/BoardMainPage.css';
 import AuthCodeInput from "../security/AuthCodeInput";
-import { Form, Button, Row, Col, Pagination } from 'react-bootstrap';
->>>>>>> origin/dev
+import { Form, Button, Row, Col, Pagination } from "react-bootstrap";
 
 /* 페이지당 노출되는 게시물 수*/
 const POSTS_PER_PAGE = 10;
@@ -16,77 +11,52 @@ const POSTS_PER_PAGE = 10;
 const BoardMainPage = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);  // 받은 페이지 변수 [게시글 : 10개 묶음]
+  const [page, setPage] = useState(1); // 받은 페이지 변수 [게시글 : 10개 묶음]
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const navigate = useNavigate();
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태 추가
+
+  // 인증 처리 부분
+  const [isVerified, setIsVerified] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await fetchPostList();
-        const sorted = [...data].sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-        setPosts(sorted);
-      } catch (err) {
-        console.error("게시글 불러오기 오류:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
+    const verified = sessionStorage.getItem("authCodeVerified");
+    if (verified === "true") {
+      setIsVerified(true);
+    }
   }, []);
-=======
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");       // 검색어 상태 추가
 
-    // 인증 처리 부분
-    const [isVerified, setIsVerified] = useState(false);
-    const [showAuthModal, setShowAuthModal] = useState(false);
+  useEffect(() => {
+    if (!isVerified) return;
+    fetchPostList(page, searchQuery)
+      .then((data) => {
+        console.log("받은 데이터:", data);
+        setPosts(data);
+        setHasNextPage(data.length === 10);
+      })
+      .catch((err) => console.error("목록 불러오기 실패", err));
+  }, [page, searchQuery, isVerified]);
 
-
-      useEffect(() => {
-        const verified = sessionStorage.getItem("authCodeVerified");
-        if (verified === "true") {
-          setIsVerified(true);
-        }
-      }, []);
-
-      useEffect(() => {
-        if (!isVerified) return;
-        fetchPostList(page, searchQuery)
-          .then(data => {
-            console.log("받은 데이터:", data);
-            setPosts(data);
-            setHasNextPage(data.length === 10);
-          })
-          .catch(err => console.error('목록 불러오기 실패', err));
-      }, [page, searchQuery, isVerified]);
-
-    const goNext = () => setPage(prev => prev + 1);
-    const goPrev = () => setPage(prev => (prev > 1 ? prev - 1 : 1));
+  const goNext = () => setPage((prev) => prev + 1);
+  const goPrev = () => setPage((prev) => (prev > 1 ? prev - 1 : 1));
   // useEffect(() => {
   //   const fetchPosts = async () => {
   //     try {
   //       const data = await fetchPostList();
   //       const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
   //       setPosts(sorted);
-  //     } 
+  //     }
   //     catch (err) {
   //       console.error("게시글 불러오기 오류:", err);
-  //     } 
+  //     }
   //     finally {
   //       setLoading(false);
   //     }
   //   };
-  
+
   //   fetchPosts();
   // }, []);
->>>>>>> origin/dev
-
 
   //페이지 출력 처리
   const handleSearchChange = (e) => setSearchQuery(e.target.value); // 검색어 입력값 변경 처리
@@ -103,6 +73,10 @@ const BoardMainPage = () => {
     setPage(1); // 인증되면 페이지 리셋
   };
 
+  // 등록 버튼 핸들러
+  const handleBoardPage = () => {
+    navigate("/boardpage");
+  };
 
   // if (loading) return <div className="board-empty">불러오는 중...</div>;
 
@@ -122,111 +96,110 @@ const BoardMainPage = () => {
 
   // const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
-<<<<<<< HEAD
-  const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const handleNext = () =>
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-=======
   // const handlePrev = () => setCurrentPage(prev => Math.max(prev - 1, 1));
   // const handleNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
->>>>>>> origin/dev
 
   // // placeholder 개수 계산
   // const placeholders = POSTS_PER_PAGE - currentPosts.length;
 
-  const handleBoardPage = () => {
-    navigate("/boardpage"); // 등록 페이지로 이동
-  };
-
   return (
-    <div className="board-container" >
+    <div className="board-container">
       <h1 className="board-title">노티스텔</h1>
       <p className="board-desc">우리 집에 대한 따끈한 소식이 있어요!</p>
-<<<<<<< HEAD
-      {/* 게시글 등록 버튼 */}
-      <div className="button-container">
-        <button className="submit" onClick={handleBoardPage}>
-          게시글 등록
-        </button>
-      </div>
-      <table className="board-table">
-        <thead>
-          <tr>
-            <th style={{ width: "60px" }}>번호</th>
-            <th style={{ width: "60%" }}>제목</th>
-            <th style={{ width: "120px" }}>작성자</th>
-            <th style={{ width: "160px" }}>작성일자</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentPosts.map((post) => (
-            <tr key={post.id}>
-              <td>{post.id}</td>
-              <td style={{ textAlign: "left" }}>{post.title}</td>
-              <td>{post.author}</td>
-              <td>{post.date}</td>
-=======
-      <div style={{ maxWidth: '800px', margin: '0 auto', marginBottom: '16px' }}>
+      <div
+        style={{ maxWidth: "800px", margin: "0 auto", marginBottom: "16px" }}
+      >
         {/* 인증 버튼 - 우측 상단 정렬 */}
-                <Row className="mb-2">
-                  <Col>
-                    <div className="d-flex justify-content-end">
-                      {isVerified ? (
-                        <Button variant="success" style={{width: '80px', marginRight:'12px'}} disabled>인증됨</Button>
-                      ) : (
-                        <Button variant="warning" onClick={handleOpenAuth} style={{width: '120px', marginRight:'12px'}}  >인증코드 입력</Button>
-                      )}
-                    </div>
-                  </Col>
-                </Row>
-    <Row className="justify-content-end" style={{ marginRight: '0', marginLeft: '0', gap: '8px' }}>
-        <Col xs="auto" style={{ paddingRight: '0px' }}>
-            <Form.Control
-                type="text"
-                placeholder="게시글 검색"
-                value={searchQuery}
-                onChange={handleSearchChange}
-                style={{ minWidth: '200px', borderRadius: '8px', padding: '8px' }}
-            />
-        </Col>
-        <Col xs="auto" style={{ paddingLeft: '0px' }}>
-            <Button 
-                type="submit" 
-                variant="primary" 
-                style={{ minWidth: '80px', padding: '8px', borderRadius: '8px' }}
+        <Row className="mb-2">
+          <Col>
+            <div className="d-flex justify-content-end">
+              {isVerified ? (
+                <Button
+                  variant="success"
+                  style={{ width: "80px", marginRight: "12px" }}
+                  disabled
+                >
+                  인증됨
+                </Button>
+              ) : (
+                <Button
+                  variant="warning"
+                  onClick={handleOpenAuth}
+                  style={{ width: "120px", marginRight: "12px" }}
+                >
+                  인증코드 입력
+                </Button>
+              )}
+            </div>
+          </Col>
+        </Row>
+        <Row
+          className="justify-content-end"
+          style={{ marginRight: "0", marginLeft: "0", gap: "8px" }}
+        >
+          <Col xs="auto" style={{ paddingLeft: "0px", flex: 1 }}>
+            <Button
+              onClick={handleBoardPage}
+              className="submit"
+              style={{
+                minWidth: "120px",
+                padding: "8px",
+                borderRadius: "8px",
+                marginLeft: "0",
+              }}
             >
-                검색
+              게시글 등록
             </Button>
-        </Col>
-    </Row>
+          </Col>
+          <Col xs="auto" style={{ paddingRight: "0px" }}>
+            <Form.Control
+              type="text"
+              placeholder="게시글 검색"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              style={{ minWidth: "200px", borderRadius: "8px", padding: "8px" }}
+            />
+          </Col>
+          <Col xs="auto" style={{ paddingLeft: "0px" }}>
+            <Button
+              type="submit"
+              variant="primary"
+              style={{ minWidth: "80px", padding: "8px", borderRadius: "8px" }}
+            >
+              검색
+            </Button>
+          </Col>
+        </Row>
       </div>
       {!isVerified ? (
         <p className="text-center text-danger">인증되지 않은 사용자입니다.</p>
       ) : posts.length === 0 ? (
         <p className="text-center">게시글이 없습니다.</p>
       ) : (
-      <table className="board-table">
-        <thead>
-          <tr>
-            <th style={{width: '45%'}}>제목</th>
-            <th style={{width: '164px'}}>작성자</th>
-            <th style={{width: '160px'}}>작성일자</th>
-            <th style={{width: '120px'}}>조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map(post => (
-            <tr key={post.id} style={{cursor:'pointer'}} onClick={()=> navigate(`/post/${post.id}`, {state: post })}>
-              <td style={{textAlign: "center"}}>{post.title}</td>
-              <td>{post.writer}</td>
-              <td>{new Date(post.created_at).toISOString().split('T')[0]}</td>
-              <td>{post.view_cnt}</td>
->>>>>>> origin/dev
+        <table className="board-table">
+          <thead>
+            <tr>
+              <th style={{ width: "45%" }}>제목</th>
+              <th style={{ width: "164px" }}>작성자</th>
+              <th style={{ width: "160px" }}>작성일자</th>
+              <th style={{ width: "120px" }}>조회수</th>
             </tr>
-
-          ))}
-          {/* placeholder 라인 추가 */}
-          {/* {[...Array(placeholders)].map((_, idx) => (
+          </thead>
+          <tbody>
+            {posts.map((post) => (
+              <tr
+                key={post.id}
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/post/${post.id}`, { state: post })}
+              >
+                <td style={{ textAlign: "center" }}>{post.title}</td>
+                <td>{post.writer}</td>
+                <td>{new Date(post.created_at).toISOString().split("T")[0]}</td>
+                <td>{post.view_cnt}</td>
+              </tr>
+            ))}
+            {/* placeholder 라인 추가 */}
+            {/* {[...Array(placeholders)].map((_, idx) => (
             <tr key={`placeholder-${idx}`} className="placeholder-row">
               <td>&nbsp;</td>
               <td></td>
@@ -234,41 +207,25 @@ const BoardMainPage = () => {
               <td></td>
             </tr>
           ))} */}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
       )}
 
-
-
       {/* 페이지네이션 */}
-<<<<<<< HEAD
-      <div className="pagination">
-        <button onClick={handlePrev} disabled={currentPage === 1}>
-          이전
-        </button>
-        <span style={{ margin: "0 16px" }}>
-          {currentPage} / {totalPages}
-        </span>
-        <button onClick={handleNext} disabled={currentPage === totalPages}>
-          다음
-        </button>
-=======
       <div className="d-flex justify-content-center mt-4">
         <Pagination>
           <Pagination.Prev onClick={goPrev} disabled={page === 1} />
           <Pagination.Item active>{page}</Pagination.Item>
           <Pagination.Next onClick={goNext} disabled={!hasNextPage} />
         </Pagination>
->>>>>>> origin/dev
       </div>
       <AuthCodeInput
         show={showAuthModal}
         onClose={handleCloseAuth}
         onSuccess={handleAuthSuccess}
       />
-
     </div>
   );
-}
+};
 
 export default BoardMainPage;

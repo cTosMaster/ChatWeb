@@ -12,27 +12,16 @@ body {
 
 .board-container {
   width: 90%;
-<<<<<<< HEAD
-  margin: 40px auto;
+  margin: 0 auto;
   font-family: "Segoe UI", "Arial", sans-serif;
   border: 2.5px solid #50b6fa; /* 원하는 색상으로 변경 가능 */
   border-radius: 16px; /* 모서리를 둥글게, 원하면 이 값도 조절 */
   /*box-shadow: 0 0 18px 1px #ececec;  /* (옵션) 살짝 그림자 효과 */
   background: #fff;
   margin-bottom: 64px;
-=======
-  margin: 0 auto;
-  font-family: 'Segoe UI', 'Arial', sans-serif;
-  border: 2.5px solid #50B6FA;       /* 원하는 색상으로 변경 가능 */
-  border-radius: 16px;               /* 모서리를 둥글게, 원하면 이 값도 조절 */
-  /*box-shadow: 0 0 18px 1px #ececec;  /* (옵션) 살짝 그림자 효과 */
-  background: #fff;
-  margin-bottom: 64px;   
   max-width: 800px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  
->>>>>>> origin/dev
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .board-title {
