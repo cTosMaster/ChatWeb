@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"; // 다른 페이지로 이동하
 import "../css/BoardPage.css";
 import { createPost } from "../api/boardApi";
 
-// 게시글 수정일 경우
 const BoardPage = ({ onPostSubmitted }) => {
   const [title, setTitle] = useState("");
   const [writer, setWriter] = useState("");
@@ -20,7 +19,7 @@ const BoardPage = ({ onPostSubmitted }) => {
     try {
       const postData = { title, writer, content };
 
-      const response = await createPost(postData);
+      const response = await createPost(postData); // createPost 사용
 
       onPostSubmitted?.(response);
       navigate("/");
