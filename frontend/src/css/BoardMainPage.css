@@ -110,3 +110,9 @@ body {
   height: 16px;
   border-bottom: 1px solid #eee;
 }
+
+/* !!! 등록 버튼 */
+.board-container button.submit {
+  background-color: #3498db;
+  color: white;
+}
