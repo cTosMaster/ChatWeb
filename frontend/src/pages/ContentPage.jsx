@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchPostById, deletePost } from '../api/boardApi'; // api.js에서 함수 불러오기
+import { fetchPostById, deletePost, increaseViewCount } from '../api/boardApi'; // api.js에서 함수 불러오기
 import { Link } from 'react-router-dom';  // 링크 추가
 import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
@@ -19,29 +19,41 @@ const ContentPage = () => {
   useEffect(() => {
     const loadPost = async () => {
       try {
-        if (!post) {
-          const fetchedPost = await fetchPostById(id);
-          setPost(fetchedPost);
+        const viewedKey = `viewed_post_${id}`;
+        const alreadyViewed = sessionStorage.getItem(viewedKey);
+  
+        if (state?.post) {
+          setPost(state.post);
+          if (!alreadyViewed) {
+            await increaseViewCount(state.post.id);
+            sessionStorage.setItem(viewedKey, 'true');
+          }
         } 
         else {
-          await increaseViewCount(post.id);
+          const fetchedPost = await fetchPostById(id);
+          setPost(fetchedPost);
+          if (!alreadyViewed) {
+            await increaseViewCount(fetchedPost.id);
+            sessionStorage.setItem(viewedKey, 'true');
+          }
         }
-      } 
-      catch (error) {
-        console.error('게시글 처리 중 오류:', error);
+      } catch (err) {
+        console.error('게시글 처리 중 오류:', err);
       }
     };
   
     loadPost();
-  }, [id, post]);
+  }, [id]);
 
   // 수정 함수
   const handleEdit = () => {
+    if (!post) return;
     // 수정 페이지로 이동하는 함수
     navigate(`/edit/${post.id}`, { state: { post } });
   };
 
   const handleDelete = async () => {
+    if (!post) return;
     try {
         const result = await deletePost(post.id);
         console.log("삭제 메시지:", result);
@@ -73,6 +85,21 @@ const ContentPage = () => {
         </Col>
         <Col md="6" className="text-end">
           <p><strong>작성일:</strong> {new Date(post.created_at).toLocaleString()}</p>
+        </Col>
+      </Row>
+      <Row className="mb-3">
+        <Col>
+          {/* 내용에 테두리 추가 */}
+          <div
+            style={{
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              padding: '16px',
+              backgroundColor: '#f9f9f9',
+            }}
+>
+            <p style={{ marginBottom: 0 }}>작성자 : {post.writer}</p>
+          </div>
         </Col>
       </Row>
       <Row className="mb-3">

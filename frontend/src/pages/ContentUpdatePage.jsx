@@ -65,6 +65,17 @@ const ContentUpdatePage = () => {
 
             <Row className="mb-3">
                 <Col>
+                    <Form.Control
+                        type="text"
+                        value={post.writer}
+                        onChange={(e) => setPost({ ...post, writer: e.target.value })}
+                        placeholder="작성자"
+                    />
+                </Col>
+            </Row>
+            
+            <Row className="mb-3">
+                <Col>
                     <div
                         style={{
                             border: "1px solid #ccc",
@@ -83,17 +94,6 @@ const ContentUpdatePage = () => {
                             style={{ border: "none", backgroundColor: "transparent", resize: "none" }}
                         />
                     </div>
-                </Col>
-            </Row>
-
-            <Row className="mb-3">
-                <Col>
-                    <Form.Control
-                        type="text"
-                        value={post.writer}
-                        onChange={(e) => setPost({ ...post, writer: e.target.value })}
-                        placeholder="작성자"
-                    />
                 </Col>
             </Row>
 
