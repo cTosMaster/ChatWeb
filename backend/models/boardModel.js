@@ -27,6 +27,7 @@ exports.createBoard = (data) => {
   );
 };
 
+
 exports.updateBoard = (id, data) => {
   const { title, content, writer } = data;
   return db.query(
@@ -38,3 +39,4 @@ exports.updateBoard = (id, data) => {
 exports.deleteBoard = (id) => {
   return db.query('DELETE FROM board WHERE id = ?', [id]);
 };
+
