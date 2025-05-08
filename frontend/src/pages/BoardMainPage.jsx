@@ -9,12 +9,12 @@ import { Form, Button, Row, Col, Pagination } from 'react-bootstrap';
 const POSTS_PER_PAGE = 10;
 
 const BoardMainPage = () => {
-  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);  // 받은 페이지 변수 [게시글 : 10개 묶음]
   const [loading, setLoading] = useState(true);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");       // 검색어 상태 추가
+  const [totalPages, setTotalPages] = useState(1);
 
     // 인증 처리 부분
     const [isVerified, setIsVerified] = useState(false);
@@ -34,6 +34,7 @@ const BoardMainPage = () => {
         .then(data => {
           console.log("받은 데이터:", data);
           setPosts(data);
+          setTotalPages(data.totalPages); 
           setHasNextPage(data.length === 10);
         })
         .catch(err => console.error('목록 불러오기 실패', err));
@@ -72,7 +73,7 @@ const BoardMainPage = () => {
                       ) : (
                         <Button variant="warning" onClick={handleOpenAuth} style={{width: '120px', marginRight:'-30px'}}  >인증코드 입력</Button>
                       )}
-                    </div>
+                       </div>  
                   </Col>
                 </Row>
     <Row className="justify-content-end" style={{ marginRight: '0', marginLeft: '0', gap: '8px' }}>
@@ -90,6 +91,7 @@ const BoardMainPage = () => {
                 type="submit" 
                 variant="primary" 
                 style={{ minWidth: '80px', padding: '9px', borderRadius: '8px', marginRight:'-42px' }}
+                onClick={handleSearchSubmit}
             >
                 검색
             </Button>
@@ -112,7 +114,7 @@ const BoardMainPage = () => {
         </thead>
         <tbody>
           {posts.map(post => (
-          <tr key={post.id} style={{ cursor: 'pointer' }}>
+                   <tr key={post.id} style={{ cursor: 'pointer' }}>
             <Link 
                 to={`/post/${post.id}`} 
                 state={{post}} 
@@ -139,6 +141,7 @@ const BoardMainPage = () => {
       {/* 페이지네이션 */}
       <div className="d-flex justify-content-center mt-4">
         <Pagination>
+
           <Pagination.Prev onClick={goPrev} disabled={page === 1} />
           <Pagination.Item active>{page}</Pagination.Item>
           <Pagination.Next onClick={goNext} disabled={!hasNextPage} />
