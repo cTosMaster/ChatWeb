@@ -44,7 +44,8 @@ exports.getBoardById = async (req, res) => { //해당 게시글
 exports.createBoard= async (req, res) => {  try {
     await model.createBoard(req.body); //body통째로 보냄-post방식
     res.status(201).json({ message: 'board created' });
-  } catch (err) {
+  } 
+  catch (err) {
     res.status(500).json({ error: err.message });
   }
 };

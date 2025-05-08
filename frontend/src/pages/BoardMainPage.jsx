@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchPostList } from "../api/boardApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../css/BoardMainPage.css";
 import AuthCodeInput from "../security/AuthCodeInput";
 import { Form, Button, Row, Col, Pagination } from "react-bootstrap";
@@ -9,16 +9,14 @@ import { Form, Button, Row, Col, Pagination } from "react-bootstrap";
 const POSTS_PER_PAGE = 10;
 
 const BoardMainPage = () => {
-  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1); // 받은 페이지 변수 [게시글 : 10개 묶음]
-  const [loading, setLoading] = useState(true);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태 추가
-
   // 인증 처리 부분
   const [isVerified, setIsVerified] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const verified = sessionStorage.getItem("authCodeVerified");
@@ -40,23 +38,6 @@ const BoardMainPage = () => {
 
   const goNext = () => setPage((prev) => prev + 1);
   const goPrev = () => setPage((prev) => (prev > 1 ? prev - 1 : 1));
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     try {
-  //       const data = await fetchPostList();
-  //       const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
-  //       setPosts(sorted);
-  //     }
-  //     catch (err) {
-  //       console.error("게시글 불러오기 오류:", err);
-  //     }
-  //     finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchPosts();
-  // }, []);
 
   //페이지 출력 처리
   const handleSearchChange = (e) => setSearchQuery(e.target.value); // 검색어 입력값 변경 처리
@@ -78,67 +59,19 @@ const BoardMainPage = () => {
     navigate("/boardpage");
   };
 
-  // if (loading) return <div className="board-empty">불러오는 중...</div>;
-
-  // if (posts.length === 0) {
-  //   return (
-  //     <div className="board-container">
-  //       <h1 className="board-title">게시판</h1>
-  //       <div className="board-empty">게시물이 없습니다.</div>
-  //     </div>
-  //   );
-  // }
-
-  // 1페이지면 0~9, 2페이지면 10~19 ...
-  // const indexOfLast = currentPage * POSTS_PER_PAGE;
-  // const indexOfFirst = indexOfLast - POSTS_PER_PAGE;
-  // const currentPosts = posts.slice(indexOfFirst, indexOfLast);
-
-  // const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-
-  // const handlePrev = () => setCurrentPage(prev => Math.max(prev - 1, 1));
-  // const handleNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-
-  // // placeholder 개수 계산
-  // const placeholders = POSTS_PER_PAGE - currentPosts.length;
-
   return (
-    <div className="board-container">
+    <div
+      className="board-container"
+      style={{ maxWidth: "1000px", margin: "0 auto", padding: "40px" }}
+    >
       <h1 className="board-title">노티스텔</h1>
       <p className="board-desc">우리 집에 대한 따끈한 소식이 있어요!</p>
       <div
         style={{ maxWidth: "800px", margin: "0 auto", marginBottom: "16px" }}
       >
-        {/* 인증 버튼 - 우측 상단 정렬 */}
-        <Row className="mb-2">
-          <Col>
-            <div className="d-flex justify-content-end">
-              {isVerified ? (
-                <Button
-                  variant="success"
-                  style={{ width: "80px", marginRight: "12px" }}
-                  disabled
-                >
-                  인증됨
-                </Button>
-              ) : (
-                <Button
-                  variant="warning"
-                  onClick={handleOpenAuth}
-                  style={{ width: "120px", marginRight: "12px" }}
-                >
-                  인증코드 입력
-                </Button>
-              )}
-            </div>
-          </Col>
-        </Row>
-        <Row
-          className="justify-content-end"
-          style={{ marginRight: "0", marginLeft: "0", gap: "8px" }}
-        >
-          {/* !!! 등록 버튼 */}
-          <Col xs="auto" style={{ paddingLeft: "0px", flex: 1 }}>
+        <Row className="mb-1" style={{ display: "flex", alignItems: "center" }}>
+          {/* 게시글 등록 버튼 */}
+          <Col xs="auto" style={{ paddingLeft: "0px", flex: "1" }}>
             <Button
               onClick={handleBoardPage}
               className="submit"
@@ -152,23 +85,58 @@ const BoardMainPage = () => {
               게시글 등록
             </Button>
           </Col>
-          <Col xs="auto" style={{ paddingRight: "0px" }}>
-            <Form.Control
-              type="text"
-              placeholder="게시글 검색"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              style={{ minWidth: "200px", borderRadius: "8px", padding: "8px" }}
-            />
-          </Col>
-          <Col xs="auto" style={{ paddingLeft: "0px" }}>
-            <Button
-              type="submit"
-              variant="primary"
-              style={{ minWidth: "80px", padding: "8px", borderRadius: "8px" }}
-            >
-              검색
-            </Button>
+
+          {/* 인증 버튼과 검색 필드, 검색 버튼 */}
+          <Col
+            xs="auto"
+            style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}
+          >
+            {/* 인증 버튼 */}
+            <div>
+              {isVerified ? (
+                <Button variant="success" style={{ width: "80px" }} disabled>
+                  인증됨
+                </Button>
+              ) : (
+                <Button
+                  variant="warning"
+                  onClick={handleOpenAuth}
+                  style={{ width: "120px" }}
+                >
+                  인증코드
+                </Button>
+              )}
+            </div>
+
+            {/* 검색 필드 */}
+            <div>
+              <Form.Control
+                type="text"
+                placeholder="게시글 검색"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                style={{
+                  minWidth: "200px",
+                  borderRadius: "8px",
+                  padding: "8px",
+                }}
+              />
+            </div>
+
+            {/* 검색 버튼 */}
+            <div>
+              <Button
+                type="submit"
+                variant="primary"
+                style={{
+                  minWidth: "80px",
+                  padding: "8px",
+                  borderRadius: "8px",
+                }}
+              >
+                검색
+              </Button>
+            </div>
           </Col>
         </Row>
       </div>
@@ -188,26 +156,25 @@ const BoardMainPage = () => {
           </thead>
           <tbody>
             {posts.map((post) => (
-              <tr
-                key={post.id}
-                style={{ cursor: "pointer" }}
-                onClick={() => navigate(`/post/${post.id}`, { state: post })}
-              >
-                <td style={{ textAlign: "center" }}>{post.title}</td>
-                <td>{post.writer}</td>
-                <td>{new Date(post.created_at).toISOString().split("T")[0]}</td>
-                <td>{post.view_cnt}</td>
+              <tr key={post.id} style={{ cursor: "pointer" }}>
+                <Link
+                  to={`/post/${post.id}`}
+                  state={{ post }}
+                  style={{
+                    display: "contents",
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                >
+                  <td style={{ textAlign: "center" }}>{post.title}</td>
+                  <td>{post.writer}</td>
+                  <td>
+                    {new Date(post.created_at).toISOString().split("T")[0]}
+                  </td>
+                  <td>{post.view_cnt}</td>
+                </Link>
               </tr>
             ))}
-            {/* placeholder 라인 추가 */}
-            {/* {[...Array(placeholders)].map((_, idx) => (
-            <tr key={`placeholder-${idx}`} className="placeholder-row">
-              <td>&nbsp;</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          ))} */}
           </tbody>
         </table>
       )}
