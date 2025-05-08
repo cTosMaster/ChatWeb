@@ -14,21 +14,21 @@ const ContentPage = () => {
   const { id } = useParams(); // URL에서 /post/:id 가져오기
   const navigate = useNavigate();
   const [post, setPost] = useState(state?.post || null);  // 우선 적용
-  
+
   //해당 내용 가져오기.
   useEffect(() => {
     const loadPost = async () => {
       try {
         const viewedKey = `viewed_post_${id}`;
         const alreadyViewed = sessionStorage.getItem(viewedKey);
-  
+
         if (state?.post) {
           setPost(state.post);
           if (!alreadyViewed) {
             await increaseViewCount(state.post.id);
             sessionStorage.setItem(viewedKey, 'true');
           }
-        } 
+        }
         else {
           const fetchedPost = await fetchPostById(id);
           setPost(fetchedPost);
@@ -41,7 +41,7 @@ const ContentPage = () => {
         console.error('게시글 처리 중 오류:', err);
       }
     };
-  
+
     loadPost();
   }, [id]);
 
@@ -55,23 +55,23 @@ const ContentPage = () => {
   const handleDelete = async () => {
     if (!post) return;
     try {
-        const result = await deletePost(post.id);
-        console.log("삭제 메시지:", result);
-        
-        // 성공 시
-        if (result.message) {
-            alert(result.message || 'Post deleted successfully');
-            navigate('/'); // 삭제 후 메인 페이지로 이동
-        }
-        // 실패 시
-        else if (result.error) {
-            alert(result.error || 'Failed to delete post');
-        }
+      const result = await deletePost(post.id);
+      console.log("삭제 메시지:", result);
+
+      // 성공 시
+      if (result.message) {
+        alert(result.message || 'Post deleted successfully');
+        navigate('/'); // 삭제 후 메인 페이지로 이동
+      }
+      // 실패 시
+      else if (result.error) {
+        alert(result.error || 'Failed to delete post');
+      }
     } catch (error) {
-        alert('삭제 중 오류 발생');
-        console.error(error);
+      alert('삭제 중 오류 발생');
+      console.error(error);
     }
-};
+  };
 
   if (!post) return <div>로딩 중...</div>;
 
@@ -97,7 +97,7 @@ const ContentPage = () => {
               padding: '16px',
               backgroundColor: '#f9f9f9',
             }}
->
+          >
             <p style={{ marginBottom: 0 }}>작성자 : {post.writer}</p>
           </div>
         </Col>
@@ -113,8 +113,15 @@ const ContentPage = () => {
               backgroundColor: '#f9f9f9',
               minHeight: '350px',
             }}
->
-            <p>{post.content}</p>
+          >
+            <p>
+              {post.content.split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
           </div>
         </Col>
       </Row>
