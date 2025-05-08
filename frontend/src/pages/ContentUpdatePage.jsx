@@ -73,7 +73,7 @@ const ContentUpdatePage = () => {
                     />
                 </Col>
             </Row>
-            
+
             <Row className="mb-3">
                 <Col>
                     <div

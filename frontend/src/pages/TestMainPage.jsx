@@ -14,7 +14,7 @@ const TestMainPage = () => {
   // 인증 처리 부분
   const [isVerified, setIsVerified] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  
+
   useEffect(() => {
     const verified = sessionStorage.getItem("authCodeVerified");
     if (verified === "true") {
