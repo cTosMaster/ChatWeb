@@ -10,18 +10,25 @@ body {
 }
 
 .board-container {
-  width: 90%;
+  width: 100%;
+  max-width: 1000px;
   margin: 0 auto;
   font-family: 'Segoe UI', 'Arial', sans-serif;
-  border: 2.5px solid #50B6FA;       /* 원하는 색상으로 변경 가능 */
-  border-radius: 16px;               /* 모서리를 둥글게, 원하면 이 값도 조절 */
-  /*box-shadow: 0 0 18px 1px #ececec;  /* (옵션) 살짝 그림자 효과 */
+  border: 2.5px solid #50B6FA;
+  border-radius: 16px;
   background: #fff;
-  margin-bottom: 64px;   
-  max-width: 800px;
-  padding: 20px;
+  margin-bottom: 64px;
+  padding: 40px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   
+}
+
+body, html, #root {
+  width: 100%;
+  min-width: 1200px; /* 강제로 더 넓게 */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .board-title {

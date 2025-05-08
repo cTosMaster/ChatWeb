@@ -59,7 +59,7 @@ const BoardMainPage = () => {
   };
 
   return (
-    <div className="board-container" >
+    <div className="board-container" style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px' }}>
       <h1 className="board-title">노티스텔</h1>
       <p className="board-desc">우리 집에 대한 따끈한 소식이 있어요!</p>
       <div style={{ maxWidth: '800px', margin: '0 auto', marginBottom: '16px' }}>
@@ -68,9 +68,9 @@ const BoardMainPage = () => {
                   <Col>
                     <div className="d-flex justify-content-end">
                       {isVerified ? (
-                        <Button variant="success" style={{width: '80px', marginRight:'12px'}} disabled>인증됨</Button>
+                        <Button variant="success" style={{width: '80px', marginRight:'-30px'}} disabled>인증됨</Button>
                       ) : (
-                        <Button variant="warning" onClick={handleOpenAuth} style={{width: '120px', marginRight:'12px'}}  >인증코드 입력</Button>
+                        <Button variant="warning" onClick={handleOpenAuth} style={{width: '120px', marginRight:'-30px'}}  >인증코드 입력</Button>
                       )}
                     </div>
                   </Col>
@@ -82,14 +82,14 @@ const BoardMainPage = () => {
                 placeholder="게시글 검색"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                style={{ minWidth: '200px', borderRadius: '8px', padding: '8px' }}
+                style={{ minWidth: '230px', borderRadius: '8px', padding: '8px' }}
             />
         </Col>
         <Col xs="auto" style={{ paddingLeft: '0px' }}>
             <Button 
                 type="submit" 
                 variant="primary" 
-                style={{ minWidth: '80px', padding: '8px', borderRadius: '8px' }}
+                style={{ minWidth: '80px', padding: '9px', borderRadius: '8px', marginRight:'-42px' }}
             >
                 검색
             </Button>
