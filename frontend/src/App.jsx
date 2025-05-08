@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-         <Route path="/" element={<TestMainPage />} />
+         <Route path="/" element={<BoardMainPage />} />
          {/* 인증된 사용자만 접근 가능 */}
          <Route
           path="/boardpage"
