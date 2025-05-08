@@ -112,7 +112,7 @@ const BoardMainPage = () => {
                       {isVerified ? (
                         <Button variant="success" style={{width: '80px', marginRight:'12px'}} disabled>인증됨</Button>
                       ) : (
-                        <Button variant="warning" onClick={handleOpenAuth}>인증코드 입력</Button>
+                        <Button variant="warning" onClick={handleOpenAuth} style={{width: '120px', marginRight:'12px'}}  >인증코드 입력</Button>
                       )}
                     </div>
                   </Col>
